@@ -1,0 +1,155 @@
+<html>
+<head>
+    <!-- Material Design Lite -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/servicePrincipal.js"></script>
+    <script src="js/fourSquare.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/papaparse.js"></script>
+</head>
+<body>
+<!-- Simple header with scrollable tabs. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+
+            <span class="mdl-layout-title">Test Julian</span>
+        </div>
+
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Input CSV</a>
+            <a href="#scroll-tab-2" onclick="listCountColor()" class="mdl-layout__tab">List Count Color</a>
+            <a href="#scroll-tab-3" onclick="listPersonColor()" class="mdl-layout__tab">List Color Person</a>
+            <a href="#scroll-tab-4" onclick="showJSONCountColor()" class="mdl-layout__tab">JSON Count Color</a>
+            <a href="#scroll-tab-5" onclick="showJSONPersonColor()" class="mdl-layout__tab">JSON Color Person</a>
+            <a href="#scroll-tab-6" onclick="Location()" class="mdl-layout__tab">Four Square Venues</a>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+            <div class="page-content">
+                <center style="padding-top: 20px;">
+                    <div  class="demo-card-wide mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+
+                            <h2 class="mdl-card__title-text">Update File</h2>
+
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            Please update the csv file in the next input
+                            <form>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+                                    <input class="mdl-textfield__input" placeholder="File" type="text" id="uploadFile" readonly/>
+                                    <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                                        <i class="material-icons">attach_file</i>
+                                        <input type="file" id="uploadBtn" accept=".csv">
+                                        <script>
+                                            document.getElementById("uploadBtn").onchange = function () {
+                                                document.getElementById("uploadFile").value = this.files[0].name;
+                                            };
+                                        </script>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a id="submitFile" onload="readCSV()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    Aceptar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="parsed_csv_list">
+                    </div>
+                </center>
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+            <div class="page-content">
+                <center style="padding-top: 20px">
+
+                 <div id="tableCount"></div>
+                </center>
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+            <div class="page-content">
+                <center style="padding-top: 20px">
+                    <div id="tablePersonColor"></div>
+                </center>
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-4">
+            <div class="page-content">
+
+                <center style="padding-top: 20px">
+                    <div id="JSONCountColor"></div>
+                </center>
+
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-5">
+            <div class="page-content">
+
+                <center style="padding-top: 20px">
+                    <div id="JSONPersonColor"></div>
+                </center>
+
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+            <div class="page-content">
+                <center>
+                <div id="VENUES">
+                    <center style="padding-top: 20px;">
+                        <div  class="demo-card-wide mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+
+                                <h2 class="mdl-card__title-text">Parameters of Four Square</h2>
+
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                Please fill the input of the search
+                                <form>
+                                    <div id="labLocation" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input id="location" class="mdl-textfield__input" type="text" />
+                                        <label class="mdl-textfield__label">Location</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input id="query" class="mdl-textfield__input" type="text" />
+                                        <label class="mdl-textfield__label">Query</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+                                        <input id="date" class="mdl-textfield__input" type="date" />
+                                        <label class="mdl-textfield__label">Date</label>
+                                    </div>
+
+                                </form>
+                                <div class="mdl-card__actions mdl-card--border">
+                                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="validateData()">
+                                        Aceptar
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </center>
+                </div>
+                </center>
+            </div>
+        </section>
+    </main>
+</div>
+<script >
+    $("#submitFile").ready(readCSV());
+
+</script>
+</body>
+</html>
